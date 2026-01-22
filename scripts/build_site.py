@@ -1,7 +1,7 @@
 import argparse
-import locale
 import os
 import re
+from babel.dates import format_datetime
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -205,9 +205,8 @@ def main():
     bajz_img_url = fetch_bajz_image(bajz_img_fs)
     bajz_ocr = try_ocr(bajz_img_fs)
 
-    locale.setlocale(locale.LC_TIME, "sl_SI.UTF-8")
     now = datetime.now(ZoneInfo(args.tz)).strftime("%Y-%m-%d %H:%M %Z")
-    day = datetime.now(ZoneInfo(args.tz)).strftime("%A, %-d. %B %Y").lower()
+    day = format_datetime(datetime.now(ZoneInfo(args.tz)), "EEEE, d. MMMM yyyy", locale="sl_SI").lower()
 
     # Raw text report
     report_txt = []
