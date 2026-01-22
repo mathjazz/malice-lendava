@@ -1,4 +1,5 @@
 import argparse
+import locale
 import os
 import re
 from datetime import datetime
@@ -204,7 +205,9 @@ def main():
     bajz_img_url = fetch_bajz_image(bajz_img_fs)
     bajz_ocr = try_ocr(bajz_img_fs)
 
+    locale.setlocale(locale.LC_TIME, "sl_SI.UTF-8")
     now = datetime.now(ZoneInfo(args.tz)).strftime("%Y-%m-%d %H:%M %Z")
+    day = datetime.now(ZoneInfo(args.tz)).strftime("%A, %-d. %B %Y").lower()
 
     # Raw text report
     report_txt = []
@@ -233,7 +236,7 @@ def main():
     if bajz_ocr:
         ocr_block = f"""
           <details class="card">
-            <summary><strong>OCR (best effort)</strong></summary>
+            <summary><strong>OCR</strong></summary>
             <pre>{html_escape(bajz_ocr)}</pre>
           </details>
         """
@@ -251,7 +254,7 @@ def main():
     .meta {{ color: #555; }}
     .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }}
     .card {{ background: white; border-radius: 14px; padding: 14px 16px; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }}
-    h1 {{ margin: 0 0 6px 0; font-size: 22px; }}
+    h1 {{ margin: 0 0 16px 0; font-size: 28px; }}
     h2 {{ margin: 0 0 10px 0; font-size: 18px; }}
     ul {{ margin: 0; padding-left: 18px; }}
     img {{ width: 100%; height: auto; border-radius: 12px; }}
@@ -263,29 +266,24 @@ def main():
 <body>
   <div class="wrap">
     <header>
-      <h1>Dnevne malice</h1>
-      <div class="meta">Last updated: {html_escape(now)}</div>
+      <h1>Dnevne malice ({day})</h1>
     </header>
 
-    <h2>Pizzeria Popaj — “Dnevne malice”</h2>
+    <h2><a href="{POPaj_URL}">Pizzeria Popaj</a></h2>
     <div class="grid">
       {''.join(sections_html)}
     </div>
 
-    <h2 style="margin-top:18px;">Bajzovi dvori — Mursko Središće</h2>
+    <h2 style="margin-top:28px;"><a href="{BAJZ_URL}">Bajzovi dvori — Mursko Središće</a></h2>
     <div class="card">
-      <div style="margin-bottom:8px;">
-        Source page: <a href="{BAJZ_URL}">{BAJZ_URL}</a><br/>
-        Image URL: <a href="{html_escape(bajz_img_url)}">{html_escape(bajz_img_url)}</a>
-      </div>
-      <img src="assets/bajz_mursko.jpg" alt="Bajzovi dvori — Mursko Središće gableci" />
+      <img src="assets/bajz_mursko.jpg" alt="Bajzovi dvori — Mursko Središće" />
     </div>
 
     {ocr_block}
 
     <footer>
       <div class="card">
-        Raw text report: <a href="assets/report.txt">assets/report.txt</a>
+        <a href="assets/report.txt">Besedilni način</a>
       </div>
     </footer>
   </div>
