@@ -211,8 +211,8 @@ def main():
 
     # Raw text report
     report_txt = []
-    report_txt.append(f"Malice report ({now})\n")
-    report_txt.append("Pizzeria Popaj — Dnevne malice\n")
+    report_txt.append(f"Malice ({now})\n")
+    report_txt.append("Pizzeria Popaj\n")
     for k, items in popaj.items():
         report_txt.append(f"\n{k}:\n" + "\n".join(items))
     report_txt.append("\n\nBajzovi dvori — Mursko Središće\n")
@@ -246,7 +246,7 @@ def main():
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dnevne malice</title>
+  <title>Dnevne malice - Lendava</title>
   <style>
     body {{ font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; padding: 24px; background: #f6f7f9; }}
     .wrap {{ max-width: 980px; margin: 0 auto; }}
